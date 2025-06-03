@@ -1,0 +1,2 @@
+# sortirsampah
+tidak ada
