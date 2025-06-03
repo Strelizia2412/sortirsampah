@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sortir Sampah</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #e8f5e9;
+    }
+    h1 {
+      color: #2e7d32;
+    }
+    .game-container {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-top: 30px;
+    }
+    .item, .bin {
+      width: 100px;
+      height: 100px;
+      border: 2px dashed #555;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      background-color: #fff;
+      cursor: grab;
+    }
+    .bin {
+      border-color: #2e7d32;
+    }
+    .correct {
+      background-color: #a5d6a7;
+    }
+  </style>
+</head>
+<body>
+  <h1>Game Sortir Sampah</h1>
+  <p>Seret item ke tempat sampah yang sesuai!</p>
+
+  <div class="game-container">
+    <div class="item" draggable="true" id="item1" data-type="organik">Kulit Pisang</div>
+    <div class="item" draggable="true" id="item2" data-type="anorganik">Botol Plastik</div>
+  </div>
+
+  <div class="game-container">
+    <div class="bin" data-accept="organik">Organik</div>
+    <div class="bin" data-accept="anorganik">Anorganik</div>
+  </div>
+
+  <script>
+    const items = document.querySelectorAll('.item');
+    const bins = document.querySelectorAll('.bin');
+
+    items.forEach(item => {
+      item.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', item.id);
+      });
+    });
+
+    bins.forEach(bin => {
+      bin.addEventListener('dragover', e => {
+        e.preventDefault();
+      });
+
+      bin.addEventListener('drop', e => {
+        e.preventDefault();
+        const itemId = e.dataTransfer.getData('text');
+        const draggedItem = document.getElementById(itemId);
+        if (draggedItem.dataset.type === bin.dataset.accept) {
+          bin.appendChild(draggedItem);
+          draggedItem.classList.add('correct');
+          draggedItem.setAttribute('draggable', false);
+        } else {
+          alert('Ups! Itu tempat sampah yang salah.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
